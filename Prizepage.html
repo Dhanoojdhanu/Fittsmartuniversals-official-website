@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" type="image/png" href="/static/MainLogo.png">
+  <title>Fittsmartuniversals pricing</title>
+  <style>
+    :root{
+      --bg-1: linear-gradient(135deg,#0f172a 0%, #0b1220 50%, #071428 100%);
+      --glass: rgba(255,255,255,0.06);
+      --accent: linear-gradient(90deg,#7c3aed,#06b6d4);
+      --card-shadow: 0 10px 30px rgba(2,6,23,0.6);
+      --glass-border: rgba(255,255,255,0.06);
+      --glass-2: rgba(255,255,255,0.03);
+      font-family: Inter, ui-sans-serif, system-ui;
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      min-height:100%;
+      background:var(--bg-1);
+      color:#e6eef8;
+      padding:48px;
+      overflow:auto;
+      animation: pageFade 1.0s ease-in-out forwards;
+    }
+
+    .blob{position:fixed;border-radius:50%;filter:blur(60px);opacity:0.7;mix-blend-mode:screen;pointer-events:none}
+    .blob.b1{width:420px;height:420px;left:-80px;top:-100px;background:radial-gradient(circle at 20% 20%, #7c3aed 0%, transparent 40%), radial-gradient(circle at 80% 80%, #06b6d4 0%, transparent 40%);animation:float1 12s ease-in-out infinite}
+    .blob.b2{width:300px;height:300px;right:-60px;bottom:-80px;background:radial-gradient(circle at 30% 30%, #f97316 0%, transparent 40%), radial-gradient(circle at 70% 70%, #ef4444 0%, transparent 40%);animation:float2 14s ease-in-out infinite}
+
+    @keyframes float1{0%{transform:translateY(0)}50%{transform:translateY(28px) rotate(12deg)}100%{transform:translateY(0)}}
+    @keyframes float2{0%{transform:translateY(0)}50%{transform:translateY(-26px) rotate(-8deg)}100%{transform:translateY(0)}}
+    @keyframes pageFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+    .wrap{
+      width:100%;
+      max-width:1100px;
+      margin:auto;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:20px;
+      padding:36px;
+      box-shadow:var(--card-shadow);
+      border:1px solid rgba(255,255,255,0.03);
+      backdrop-filter: blur(8px) saturate(120%);
+      position:relative;
+      overflow:hidden;
+    }
+
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;gap:12px;flex-wrap:wrap}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:44px;height:44px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;color:white;}
+    h1{font-size:20px;margin:0}
+    p.lead{margin:0;color:rgba(230,238,248,0.75);font-size:13px}
+
+    .toggle{display:flex;align-items:center;gap:10px;background:var(--glass-2);padding:8px;border-radius:999px;border:1px solid var(--glass-border)}
+    .switch{width:56px;height:28px;background:#071428;border-radius:999px;padding:3px;display:flex;align-items:center}
+    .knob{width:22px;height:22px;background:white;border-radius:50%;transition:transform .28s}
+
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+    @media(max-width:900px){.grid{grid-template-columns:1fr}}
+
+    .card{
+      background:rgba(255,255,255,0.03);
+      border-radius:16px;
+      padding:22px;
+      border:1px solid rgba(255,255,255,0.03);
+      min-height:360px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      transition:0.3s;
+    }
+    .card:hover{transform:translateY(-12px) scale(1.02)}
+
+    .popular{outline:2px solid rgba(124,58,237,0.12)}
+
+    .price{font-size:44px;font-weight:700;margin:12px 0}
+    .price span.small{font-size:14px;color:rgba(230,238,248,0.7)}
+
+    ul.features{list-style:none;padding:0;margin:12px 0}
+    ul.features li{padding:8px 0;border-bottom:1px dashed rgba(255,255,255,0.05);display:flex;gap:12px;align-items:center}
+    .tick{width:18px;height:18px;border-radius:4px;background:linear-gradient(90deg,#10b981,#06b6d4);display:grid;place-items:center;color:#fff;font-size:12px}
+
+    .cta{display:flex;gap:12px}
+    .btn{padding:12px 16px;border-radius:12px;border:1px solid rgba(255, 255, 255, 0.171);background:transparent;color:rgb(255, 255, 255);cursor:pointer;text-decoration: none;}
+    .btn:hover{background: rgba(255,255,255,0.1);}
+    .btn.primary{background:var(--accent);color:white}
+    
+    .brand-header {
+  display: flex;
+  justify-content: space-between; /* left text + right buttons */
+  align-items: center;
+  width: 100%;
+}
+
+.nav-btns {
+  margin-left: auto; /* pushes it fully to right */
+}
+
+.nav-btns a {
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.3);
+  color: white;
+  text-decoration: none;
+  margin-left: 10px;
+  font-size: 15px;
+  transition: 0.2s;
+}
+
+.nav-btns a:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+    .foot{display:flex;justify-content:space-between;margin-top:18px;font-size:13px;color:rgba(230,238,248,0.7)}
+  </style>
+</head>
+
+<body>
+
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+
+  <div class="wrap">
+
+    <header>
+  <div class="brand-header">
+    <div>
+      <h1>Fittsmartuniversals Plan Prices</h1>
+      <p class="lead">Choose your best plan</p>
+    </div>
+
+    <div class="nav-btns">
+      <a class="btn-nav" href="javascript:history.back()">← Back</a>
+
+      <a class="btn-nav" href="/">Home</a>
+    </div>
+  </div>
+</header>
+
+      
+    </header>
+
+    <!-- 9 CARD GRID START -->
+    <section class="grid">
+
+      <!-- 1 -->
+      <article class="card">
+        <div>
+          <h2>Diet Only</h2>
+          <div class="price">₹1199/-<span class="small">(1 Month)</span></div>
+          <ul class="features">
+            <p>•  Daily food monitoring</p>
+            <p>•  Weekly weight checking</p>
+            <p>•  Checking water intake</p>
+            <p>•  Daily step tracking</p>
+            <p>•  Doubt clearing session with Nutritionist</p>
+          </ul>
+        </div>
+        <div>
+          <div class="cta">
+          <a class="btn" href="https://wa.me/918848774574?text=Hello%2C%20I%20want%20to%20connect!">Join Now</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 2-->
+      <article class="card">
+        <div>
+          <h2>Diet Only</h2>
+          <div class="price">₹2999/-<span class="small">(3 Month)</span></div>
+          <ul class="features">
+            <p>•  Daily food monitoring</p>
+                                   <p>•  Weekly weight checking</p>
+                                   <p>•  Checking water intake</p>
+                                   <p>•  Daily step tracking</p>
+                                   <p>•  Doubt clearing session with Nutritionist</p>
+                                   <p>•  Monthly changing diet plans</p>
+          </ul>
+        </div>
+        <div>
+          <div class="cta">
+          <a class="btn" href="https://wa.me/918848774574?text=Hello%2C%20I%20want%20to%20connect!">Join Now</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 3 -->
+      <article class="card">
+        <div>
+          <h2>Diet Only</h2>
+          <div class="price">₹5999/-<span class="small">(6 Month)</span></div>
+          <ul class="features">
+            <p>•  Daily food monitoring</p>
+                                   <p>•  Weekly weight checking</p>
+                                   <p>•  Checking water intake</p>
+                                   <p>•  Daily step tracking</p>
+                                   <p>•  Doubt clearing session with Nutritionist</p>
+                                   <p>•  Monthly changing diet plans</p>
+          </ul>
+        </div>
+        <div>
+          <div class="cta">
+          <a class="btn" href="https://wa.me/918848774574?text=Hello%2C%20I%20want%20to%20connect!">Join Now</a>
+          </div>
+        </div>
+      </article>
+      <!-- 4 -->
+      <article class="card">
+        <div>
+          <h2>Diet & Recorded Workout</h2>
+          <div class="price">₹1799/-<span class="small">(1 Month)</span></div>
+          <ul class="features">
+            <p>•  Daily food monitoring</p>
+            <p>•  Weekly weight checking</p>
+            <p>•  Checking water intake</p>
+            <p>•  Daily step tracking</p>
+            <p>•  Doubt clearing session with Nutritionist</p>
+            <p>•  6 days of workout in a week</p>
+          </ul>
+        </div>
+        <div>
+          <div class="cta">
+          <a class="btn" href="https://wa.me/918848774574?text=Hello%2C%20I%20want%20to%20connect!">Join Now</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 5-->
+      <article class="card">
+        <div>
+          <h2>Diet & Recorded Workout</h2>
+          <div class="price">₹4799/-<span class="small">(3 Month)</span></div>
+          <ul class="features">
+            <p>•  Daily food monitoring</p>
+                                   <p>•  Weekly weight checking</p>
+                                   <p>•  Checking water intake</p>
+                                   <p>•  Daily step tracking</p>
+                                   <p>•  Doubt clearing session with Nutritionist</p>
+                                   <p>•  Monthly changing diet plans</p>
+                                   <p>•  6 days of workout in a week</p>
+          </ul>
+        </div>
+        <div>
+          <div class="cta">
+          <a class="btn" href="https://wa.me/918848774574?text=Hello%2C%20I%20want%20to%20connect!">Join Now</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 6 -->
+      <article class="card">
+        <div>
+          <h2>Diet & Recorded Workout</h2>
+          <div class="price">₹9600/-<span class="small">(6 Month)</span></div>
+          <ul class="features">
+            <p>•  Daily food monitoring</p>
+                                   <p>•  Weekly weight checking</p>
+                                   <p>•  Checking water intake</p>
+                                   <p>•  Daily step tracking</p>
+                                   <p>•  Doubt clearing session with Nutritionist</p>
+                                   <p>•  Monthly changing diet plans</p>
+                                   <p>•  6 days of workout in a week</p>
+          </ul>
+        </div>
+        <div>
+          <div class="cta">
+          <a class="btn" href="https://wa.me/918848774574?text=Hello%2C%20I%20want%20to%20connect!">Join Now</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 7 -->
+      <article class="card">
+        <div>
+          <h2>Diet & Live Group Workout</h2>
+          <div class="price">₹2399/-<span class="small">(1 Month)</span></div>
+          <ul class="features">
+            <p>•  Daily food monitoring</p>
+            <p>•  Weekly weight checking</p>
+            <p>•  Checking water intake</p>
+            <p>•  Daily step tracking</p>
+            <p>•  Doubt clearing session with Nutritionist</p>
+            <p>•  Monday to Friday live group workout</p>
+          </ul>
+        </div>
+        <div>
+          <div class="cta">
+          <a class="btn" href="https://wa.me/918848774574?text=Hello%2C%20I%20want%20to%20connect!">Join Now</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 8-->
+      <article class="card">
+        <div>
+          <h2>Diet & Live Group Workout</h2>
+          <div class="price">₹6599/-<span class="small">(3 Month)</span></div>
+          <ul class="features">
+            <p>•  Daily food monitoring</p>
+                                   <p>•  Weekly weight checking</p>
+                                   <p>•  Checking water intake</p>
+                                   <p>•  Daily step tracking</p>
+                                   <p>•  Doubt clearing session with Nutritionist</p>
+                                   <p>•  Monthly changing diet plans</p>
+                                   <p>•  Monday to Friday live group workout</p>
+          </ul>
+        </div>
+        <div>
+          <div class="cta">
+          <a class="btn" href="https://wa.me/918848774574?text=Hello%2C%20I%20want%20to%20connect!">Join Now</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 9 -->
+      <article class="card">
+        <div>
+          <h2>Diet & Live Group Workout</h2>
+          <div class="price">₹13199/-<span class="small">(6 Month)</span></div>
+          <ul class="features">
+            <p>•  Daily food monitoring</p>
+                                   <p>•  Weekly weight checking</p>
+                                   <p>•  Checking water intake</p>
+                                   <p>•  Daily step tracking</p>
+                                   <p>•  Doubt clearing session with Nutritionist</p>
+                                   <p>•  Monthly changing diet plans</p>
+                                   <p>•  Monday to Friday live group workout</p>
+          </ul>
+        </div>
+        <div>
+          <div class="cta">
+          <a class="btn" href="https://wa.me/918848774574?text=Hello%2C%20I%20want%20to%20connect!">Join Now</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 10 -->
+      <article class="card">
+        <div>
+          <h2>Diet & One to One Live Workout</h2>
+          <div class="price">₹5399/-<span class="small">(1 Month)</span></div>
+          <ul class="features">
+            <p>•  Daily food monitoring</p>
+            <p>•  Weekly weight checking</p>
+            <p>•  Checking water intake</p>
+            <p>•  Daily step tracking</p>
+            <p>•  Doubt clearing session with Nutritionist</p>
+            <p>•  Monday to Friday live workout</p>
+          </ul>
+        </div>
+        <div>
+          <div class="cta">
+          <a class="btn" href="https://wa.me/918848774574?text=Hello%2C%20I%20want%20to%20connect!">Join Now</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- 11-->
+      <article class="card">
+        <div>
+          <h2>Diet & One to One Live Workout</h2>
+          <div class="price">₹12999/-<span class="small">(3 Month)</span></div>
+          <ul class="features">
+            <p>•  Daily food monitoring</p>
+                                   <p>•  Weekly weight checking</p>
+                                   <p>•  Checking water intake</p>
+                                   <p>•  Daily step tracking</p>
+                                   <p>•  Doubt clearing session with Nutritionist</p>
+                                   <p>•  Monthly changing diet plans</p>
+                                   <p>•  Monday to Friday live workout</p>
+          </ul>
+        </div>
+        <div>
+          <div class="cta">
+          <a class="btn" href="https://wa.me/918848774574?text=Hello%2C%20I%20want%20to%20connect!">Join Now</a>
+          </div>
+        </div>
+      </article>
+
+      
+    </section>
+    <!-- 9 CARD GRID END -->
+
+  </div>
+
+</body>
+</html>
