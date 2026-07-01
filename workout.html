@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FITTSMARTUNIVERSALS - Workout Link</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00FF00;
+            --primary-dark: #00cc00;
+            --bg-color: #ffffff;
+            --text-main: #1a1a1a;
+            --text-muted: #666666;
+            --card-bg: #ffffff;
+            --card-border: rgba(0, 255, 0, 0.15);
+            --shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #fdfdfd 0%, #f4f7f5 100%);
+            color: var(--text-main);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background: var(--card-bg);
+            max-width: 480px;
+            width: 100%;
+            border-radius: 24px;
+            padding: 40px 30px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--card-border);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #00FF00, #32cd32);
+        }
+
+        h2 {
+            font-weight: 700;
+            font-size: 28px;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+            color: var(--text-main);
+        }
+
+        p {
+            color: var(--text-muted);
+            font-size: 15px;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 16px 20px;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            background: #fdfdfd;
+            font-size: 15px;
+            font-family: 'Outfit', sans-serif;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            color: var(--text-main);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(0, 255, 0, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #00FF00, #00cc00);
+            color: #fff;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Outfit', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 16px rgba(0, 255, 0, 0.2);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px rgba(0, 255, 0, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        #result {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f8fff8;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 0, 0.2);
+            display: none;
+            animation: slideUp 0.4s ease-out forwards;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #result strong {
+            display: block;
+            color: #00aa00;
+            margin-bottom: 10px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #clientLink {
+            font-size: 14px;
+            word-break: break-all;
+            color: var(--text-main);
+            background: #fff;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px dashed rgba(0, 255, 0, 0.4);
+            margin: 0;
+            user-select: all;
+        }
+
+        .brand {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .copy-btn {
+            margin-top: 12px;
+            background: transparent;
+            color: var(--primary-dark);
+            border: 2px solid var(--primary-dark);
+            box-shadow: none;
+            padding: 12px;
+        }
+
+        .copy-btn:hover {
+            background: rgba(0, 255, 0, 0.1);
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="brand">FITTSMARTUNIVERSALS</div>
+        <h2>Client Link Generator</h2>
+        <p>Paste your YouTube workout link below to create a secure 24-hour viewing pass.</p>
+        
+        <div class="input-group">
+            <input type="text" id="ytUrl" placeholder="https://www.youtube.com/watch?v=...">
+        </div>
+        <button onclick="generateLink()">Create Expiring Link</button>
+
+        <div id="result">
+            <strong>Send this link to your client</strong>
+            <p id="clientLink"></p>
+            <button class="copy-btn" id="copyBtn" onclick="copyToClipboard()">Copy Link</button>
+        </div>
+    </div>
+
+    <script>
+        function extractVideoId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        function generateLink() {
+            const urlInput = document.getElementById('ytUrl').value;
+            const videoId = extractVideoId(urlInput);
+
+            if (!videoId) {
+                alert("Please enter a valid YouTube URL");
+                return;
+            }
+
+            // Calculate expiration time (Current time + 24 hours in milliseconds)
+            const expireTime = Date.now() + (24 * 60 * 60 * 1000); 
+
+            // Create a combined string and obscure it using Base64
+            const payload = btoa(JSON.stringify({ id: videoId, exp: expireTime }));
+
+            // Get current page directory to point to view.html
+            const currentDir = window.location.href.substring(0, window.location.href.lastIndexOf('/'));
+            const finalLink = `${currentDir}/view.html?token=${payload}`;
+
+            document.getElementById('clientLink').innerText = finalLink;
+            document.getElementById('result').style.display = 'block';
+            
+            // Reset copy button if generating a new link
+            const copyBtn = document.getElementById('copyBtn');
+            copyBtn.innerText = 'Copy Link';
+            copyBtn.style.background = 'transparent';
+            copyBtn.style.color = 'var(--primary-dark)';
+        }
+
+        function copyToClipboard() {
+            const linkText = document.getElementById('clientLink').innerText;
+            navigator.clipboard.writeText(linkText).then(() => {
+                const copyBtn = document.getElementById('copyBtn');
+                copyBtn.innerText = 'Copied!';
+                copyBtn.style.background = 'var(--primary-dark)';
+                copyBtn.style.color = '#fff';
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                alert("Failed to copy link");
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FITTSMARTUNIVERSALS - Your Workout</title>
+    <!-- Include Plyr CSS -->
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00FF00;
+            --primary-dark: #00cc00;
+            --bg-color: #f8f9fa;
+            --text-main: #1a1a1a;
+            --text-muted: #666666;
+            --card-bg: #ffffff;
+            --shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .brand {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            box-sizing: border-box;
+            position: relative;
+            border: 1px solid rgba(0, 255, 0, 0.1);
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            border-radius: 24px 24px 0 0;
+            background: linear-gradient(90deg, #00FF00, #32cd32);
+        }
+
+        h2 {
+            font-weight: 700;
+            font-size: 28px;
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        p.subtitle {
+            color: var(--text-muted);
+            font-size: 15px;
+            margin-bottom: 30px;
+        }
+
+        /* 16:9 Aspect Ratio Container */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background: #000;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        /* Force Plyr to fill the container */
+        .plyr--video {
+            position: absolute !important;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 16px;
+        }
+
+        /* Customizing Plyr UI color to green */
+        .plyr--video .plyr__control--overlaid {
+            background: rgba(0, 255, 0, 0.8) !important;
+        }
+        .plyr--video .plyr__control:hover {
+            background: #00cc00 !important;
+        }
+        .plyr__control--overlaid:focus, .plyr__control--overlaid:hover {
+            background: #00FF00 !important;
+        }
+
+        /* CROP HACK: Make the YouTube iframe taller and shift it up. */
+        .plyr__video-wrapper iframe {
+            top: -60px !important;
+            height: calc(100% + 120px) !important;
+            pointer-events: none !important;
+        }
+
+        .error-card {
+            background: #fff5f5;
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid #ff4444;
+            color: #cc0000;
+        }
+        .error-card h1 {
+            color: #cc0000;
+            margin-top: 0;
+        }
+        .error-card p {
+            color: #cc0000;
+            opacity: 0.8;
+        }
+
+        /* Plyr Fullscreen Fallback */
+        .plyr--fullscreen-fallback {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            z-index: 9999999;
+            background: #000;
+            border-radius: 0;
+            padding-bottom: 0;
+        }
+        .plyr--fullscreen-fallback iframe {
+            height: 100% !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="brand">FITTSMARTUNIVERSALS</div>
+    <div class="container" id="content">
+        <!-- Content will be injected here by JS -->
+    </div>
+
+    <!-- Include Plyr JS -->
+    <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+    <script>
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        const token = getQueryParam('token');
+        const contentDiv = document.getElementById('content');
+
+        if (!token) {
+            contentDiv.innerHTML = `<div class="error-card"><h1>Invalid Link</h1><p>This viewing token is missing or corrupted.</p></div>`;
+        } else {
+            try {
+                const data = JSON.parse(atob(token));
+                const videoId = data.id;
+                const expirationTime = data.exp;
+                const currentTime = Date.now();
+
+                if (currentTime > expirationTime) {
+                    contentDiv.innerHTML = `
+                        <div class="error-card">
+                            <h1>Link Expired</h1>
+                            <p>This workout video was valid for 24 hours and has now expired.</p>
+                            <p>Please contact your trainer if you need an extension.</p>
+                        </div>`;
+                } else {
+                    contentDiv.innerHTML = `
+                        <h2>Your Customized Workout Routine</h2>
+                        <p class="subtitle">This exclusive link is active for 24 hours.</p>
+                        <div class="video-wrapper">
+                            <div class="plyr__video-embed" id="player">
+                                <iframe 
+                                    src="https://www.youtube.com/embed/${videoId}?origin=${window.location.origin}&amp;iv_load_policy=3&amp;modestbranding=1&amp;playsinline=1&amp;rel=0&amp;enablejsapi=1" 
+                                    allowfullscreen 
+                                    allowtransparency 
+                                    allow="autoplay">
+                                </iframe>
+                            </div>
+                        </div>`;
+                        
+                    setTimeout(() => {
+                        const player = new Plyr('#player', {
+                            youtube: { noCookie: false, rel: 0, showinfo: 0, iv_load_policy: 3, modestbranding: 1 },
+                            fullscreen: { enabled: true, fallback: true, iosNative: true }
+                        });
+                    }, 50);
+                }
+            } catch (e) {
+                contentDiv.innerHTML = `<div class="error-card"><h1>Error</h1><p>Unable to process this link.</p></div>`;
+            }
+        }
+    </script>
+</body>
+
+</html>
